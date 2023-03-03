@@ -1,3 +1,7 @@
+### LoadBalancer URL :
+http://serve-webap-ap6yxbdrbyzz-718072898.us-east-1.elb.amazonaws.com/
+
+
 ## ND9991 - C2- Infrastructure as Code - Supporting Material and Starter Code
 This folder provides the supporting material and starter code for the "ND9991 - C2- Infrastructure as Code" course. This folder contains the following folders:
 1. project_starter - It contains the starter code.
@@ -27,4 +31,4 @@ You can run the supporting material in two easy steps:
 # Change the AMI ID and key-pair name in the servers.yml
 # Check the region in the update.sh file
 ./update.sh mySecStack servers.yml server-parameters.json
-```
+
