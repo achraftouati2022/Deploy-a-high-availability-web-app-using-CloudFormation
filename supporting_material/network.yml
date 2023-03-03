@@ -1,5 +1,5 @@
 Description: >
-    Carlos Rivas / Udacity
+    Achraf Touati 
     This template deploys a VPC, with a pair of public and private subnets spread 
     across two Availabilty Zones. It deploys an Internet Gateway, with a default 
     route on the public subnets. It deploys a pair of NAT Gateways (one in each AZ), 
@@ -37,6 +37,29 @@ Parameters:
         Default: 10.0.3.0/24
 
 Resources:
+
+    IAMUdagramBucketRole:
+        Type: "AWS::IAM::Role"
+        Properties:
+            ManagedPolicyArns:
+                - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+            AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                    -   Effect: "Allow"
+                        Principal:
+                            Service:
+                                - "ec2.amazonaws.com"
+                        Action:
+                            - "sts:AssumeRole"
+            Path: "/"
+
+    ProfileWithRolesForOurApp:
+        Type: "AWS::IAM::InstanceProfile"
+        Properties:
+            Path: "/"
+            Roles:
+                - Ref: "IAMUdagramBucketRole"
 
     VPC: 
         Type: AWS::EC2::VPC
@@ -200,6 +223,18 @@ Resources:
             SubnetId: !Ref PrivateSubnet2
 
 Outputs: 
+    
+    IAMUdagramBucketRole:
+        Description: "Allow EC2 instances to manage Web App S3"
+        Value: !Ref ProfileWithRolesForOurApp
+        Export:
+            Name: !Sub ${EnvironmentName}-IAM-NAME
+            
+    IAMUdagramBucketRoleArn:
+        Description: Iam Instance Profile Arn
+        Value: !GetAtt IAMUdagramBucketRole.Arn
+        Export:
+            Name: !Sub ${EnvironmentName}-IAM-ARN
 
     VPC: 
         Description: A reference to the created VPC
